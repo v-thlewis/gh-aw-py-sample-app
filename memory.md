@@ -1,7 +1,7 @@
 # Efficiency Improver Memory
 
 ## Last Updated
-2026-05-28
+2026-05-29
 
 ## Build/Test/Benchmark Commands
 - No build system detected (pure Python scripts, no setup.py/pyproject.toml/Makefile)
@@ -18,19 +18,20 @@
 
 | Priority | Focus Area | Opportunity | Status |
 |----------|------------|-------------|--------|
-| HIGH | Code-Level | Lazy imports in ml_pipeline.py + data_processor.py (torch, numpy, matplotlib, sklearn, pandas, plotly, scipy, boto3) | PR submitted (run 1) |
-| MEDIUM | Code-Level | Dict dispatch replacing if-else chains in request_handler.py (5 chains, O(n)→O(1)) | pending |
-| MEDIUM | Code-Level | Dict dispatch in traffic_router.py route_traffic() (8 branches) | pending |
+| HIGH | Code-Level | Lazy imports in ml_pipeline.py + data_processor.py | PR submitted (run 1) |
+| MEDIUM | Code-Level | Dict dispatch in request_handler.py + traffic_router.py | PR submitted (run 2) |
 
 ## Completed Work
-- Run 1 (2026-05-28): PR for lazy imports in ml_pipeline.py and data_processor.py
+- Run 1 (2026-05-28): PR for lazy imports (branch: efficiency/lazy-imports-ml-pipeline-e0a7c2df40bd462e)
+- Run 2 (2026-05-29): PR for dict dispatch (branch: efficiency/dict-dispatch-request-handler-traffic-router)
 
 ## Work In Progress
-(none after run 1)
+None — all known backlog items have PRs submitted.
 
 ## Backlog Cursor
-Next: dict dispatch for request_handler.py / traffic_router.py
+All known opportunities submitted. Next run: scan for new opportunities (data efficiency, network I/O, etc.) or Task 4/5.
 
 ## Round-Robin Task History
-- Run 1: Task 2 (identify), Task 3 (implement lazy imports), Task 7 (monthly summary)
-  - Next run: Task 3 (dict dispatch), Task 4/5 (PR maintenance / issue comments), Task 7
+- Run 1: Task 2 (identify), Task 3 (lazy imports), Task 7 (monthly summary)
+- Run 2: Task 3 (dict dispatch), Task 7 (monthly summary update)
+  - Next run: Task 5 (issue comments), Task 6 (measurement infrastructure), Task 7
