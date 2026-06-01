@@ -30,13 +30,14 @@
 - Run 2 (2026-05-29): Branch for dict dispatch (branch: efficiency/dict-dispatch-request-handler-traffic-router)
 - Run 3 (2026-05-30): PR #7 for benchmark infrastructure (branch: efficiency/benchmark-infrastructure)
 - Run 4 (2026-05-31): Task 4/5 maintenance — PR #7 healthy, no new opportunities, monthly summary updated
-- Run 5 (2026-06-01): Task 4 (PR #7 healthy), Task 2 (no new opportunities), Task 7 (closed May issue #2, created June issue)
+- Run 5 (2026-06-01 19:28 UTC): Task 4 (PR #7 healthy), Task 2 (re-scan, no new), Task 7 (June summary created)
+- Run 6 (2026-06-01 20:47 UTC): Task 5 (no new human comments on efficiency issues), Task 6 (infra adequate — PR #7 open), Task 7 (updated June summary)
 
 ## Work In Progress
 None — all known backlog items have PRs/branches submitted.
 
 ## Backlog Cursor
-All known opportunities submitted. Next run: re-scan for new opportunities or continue Task 4/5.
+All known opportunities submitted. Next run: Task 3 (attempt dict-dispatch PR via new branch), Task 4, Task 7.
 
 ## Round-Robin Task History
 - Run 1: Task 2 (identify), Task 3 (lazy imports), Task 7 (monthly summary)
@@ -44,4 +45,5 @@ All known opportunities submitted. Next run: re-scan for new opportunities or co
 - Run 3: Task 6 (benchmark infrastructure), Task 7 (monthly summary update)
 - Run 4: Task 4 (maintain PRs — PR #7 healthy), Task 5 (issues #1/#6 — no new human comments), Task 7
 - Run 5: Task 4 (PR #7 healthy), Task 2 (re-scan, no new), Task 7 (June summary created)
-  - Next run: Task 5 (check efficiency-related issues), Task 6 (re-assess infrastructure), Task 7
+- Run 6: Task 5 (no new human comments), Task 6 (infra adequate), Task 7 (June summary updated)
+  - Next run: Task 3 (retry dict-dispatch PR), Task 4 (PR #7 check), Task 7
