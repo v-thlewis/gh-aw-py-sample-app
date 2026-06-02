@@ -3,107 +3,84 @@ Test file with intentional if-else chain violations.
 Contains multiple long if-else chains that should be converted to match/case or dict dispatch.
 """
 
+# Dict dispatch: O(1) hash lookup instead of O(n) linear branch scan.
+_REQUEST_TYPE_HANDLERS = {
+    'GET': lambda: handle_get_request(),
+    'POST': lambda: handle_post_request(),
+    'PUT': lambda: handle_put_request(),
+    'DELETE': lambda: handle_delete_request(),
+    'PATCH': lambda: handle_patch_request(),
+    'HEAD': lambda: handle_head_request(),
+    'OPTIONS': lambda: handle_options_request(),
+    'TRACE': lambda: handle_trace_request(),
+}
+
 def process_request_type(request_type):
-    """Violation 1: Long if-else chain for request type handling (8 branches)."""
-    if request_type == 'GET':
-        return handle_get_request()
-    elif request_type == 'POST':
-        return handle_post_request()
-    elif request_type == 'PUT':
-        return handle_put_request()
-    elif request_type == 'DELETE':
-        return handle_delete_request()
-    elif request_type == 'PATCH':
-        return handle_patch_request()
-    elif request_type == 'HEAD':
-        return handle_head_request()
-    elif request_type == 'OPTIONS':
-        return handle_options_request()
-    elif request_type == 'TRACE':
-        return handle_trace_request()
-    else:
-        return handle_unknown_request()
+    """Dispatch HTTP method to handler via dict lookup (O(1) vs O(n) if-else)."""
+    return _REQUEST_TYPE_HANDLERS.get(request_type, handle_unknown_request)()
+
+# Status codes map directly to values — no callable needed.
+_STATUS_MESSAGES = {
+    200: "OK",
+    201: "Created",
+    400: "Bad Request",
+    401: "Unauthorized",
+    403: "Forbidden",
+    404: "Not Found",
+    500: "Internal Server Error",
+}
 
 def get_status_message(status_code):
-    """Violation 2: Long if-else chain for HTTP status codes (7 branches)."""
-    if status_code == 200:
-        return "OK"
-    elif status_code == 201:
-        return "Created"
-    elif status_code == 400:
-        return "Bad Request"
-    elif status_code == 401:
-        return "Unauthorized"
-    elif status_code == 403:
-        return "Forbidden"
-    elif status_code == 404:
-        return "Not Found"
-    elif status_code == 500:
-        return "Internal Server Error"
-    else:
-        return "Unknown Status"
+    """Return HTTP status message via dict lookup (O(1) vs O(n) if-else)."""
+    return _STATUS_MESSAGES.get(status_code, "Unknown Status")
+
+_FILE_EXTENSION_HANDLERS = {
+    '.txt':    lambda: process_text_file(),
+    '.csv':    lambda: process_csv_file(),
+    '.json':   lambda: process_json_file(),
+    '.xml':    lambda: process_xml_file(),
+    '.pdf':    lambda: process_pdf_file(),
+    '.docx':   lambda: process_docx_file(),
+    '.xlsx':   lambda: process_xlsx_file(),
+    '.zip':    lambda: process_zip_file(),
+    '.tar.gz': lambda: process_tarball(),
+}
 
 def process_file_extension(extension):
-    """Violation 3: Long if-else chain for file type processing (9 branches)."""
-    if extension == '.txt':
-        return process_text_file()
-    elif extension == '.csv':
-        return process_csv_file()
-    elif extension == '.json':
-        return process_json_file()
-    elif extension == '.xml':
-        return process_xml_file()
-    elif extension == '.pdf':
-        return process_pdf_file()
-    elif extension == '.docx':
-        return process_docx_file()
-    elif extension == '.xlsx':
-        return process_xlsx_file()
-    elif extension == '.zip':
-        return process_zip_file()
-    elif extension == '.tar.gz':
-        return process_tarball()
-    else:
-        return process_unknown_file()
+    """Dispatch file extension to processor via dict lookup (O(1) vs O(n) if-else)."""
+    return _FILE_EXTENSION_HANDLERS.get(extension, process_unknown_file)()
+
+_DISCOUNTS = {
+    'PREMIUM': 0.20,
+    'GOLD':    0.15,
+    'SILVER':  0.10,
+    'BRONZE':  0.05,
+    'STUDENT': 0.25,
+    'SENIOR':  0.18,
+}
 
 def calculate_discount(user_type):
-    """Violation 4: Long if-else chain for discount calculation (6 branches)."""
-    if user_type == 'PREMIUM':
-        return 0.20
-    elif user_type == 'GOLD':
-        return 0.15
-    elif user_type == 'SILVER':
-        return 0.10
-    elif user_type == 'BRONZE':
-        return 0.05
-    elif user_type == 'STUDENT':
-        return 0.25
-    elif user_type == 'SENIOR':
-        return 0.18
-    else:
-        return 0.0
+    """Return discount rate via dict lookup (O(1) vs O(n) if-else)."""
+    return _DISCOUNTS.get(user_type, 0.0)
 
 class EventProcessor:
     """Class with if-else chain violations."""
-    
+
+    # Mapping built once at class definition time — avoids per-call dict allocation.
+    _EVENT_HANDLER_NAMES = {
+        'user_login':      'process_login',
+        'user_logout':     'process_logout',
+        'password_change': 'process_password_change',
+        'profile_update':  'process_profile_update',
+        'purchase':        'process_purchase',
+        'refund':          'process_refund',
+        'subscription':    'process_subscription',
+    }
+
     def handle_event(self, event_type):
-        """Violation 5: Long if-else chain in class method (7 branches)."""
-        if event_type == 'user_login':
-            return self.process_login()
-        elif event_type == 'user_logout':
-            return self.process_logout()
-        elif event_type == 'password_change':
-            return self.process_password_change()
-        elif event_type == 'profile_update':
-            return self.process_profile_update()
-        elif event_type == 'purchase':
-            return self.process_purchase()
-        elif event_type == 'refund':
-            return self.process_refund()
-        elif event_type == 'subscription':
-            return self.process_subscription()
-        else:
-            return self.process_unknown_event()
+        """Dispatch event type to handler via class-level dict + getattr (O(1) vs O(n) if-else)."""
+        method_name = self._EVENT_HANDLER_NAMES.get(event_type, 'process_unknown_event')
+        return getattr(self, method_name)()
     
     def process_login(self):
         return "Processing login event"
