@@ -2,26 +2,22 @@
 Additional test file with more if-else chain violations.
 """
 
+# O(1) dispatch table — module-level to avoid rebuilding on every call
+_REGION_ROUTES = {
+    'us-east-1': lambda: route_to_virginia(),
+    'us-west-2': lambda: route_to_oregon(),
+    'eu-west-1': lambda: route_to_ireland(),
+    'eu-central-1': lambda: route_to_frankfurt(),
+    'ap-southeast-1': lambda: route_to_singapore(),
+    'ap-northeast-1': lambda: route_to_tokyo(),
+    'ca-central-1': lambda: route_to_canada(),
+    'sa-east-1': lambda: route_to_brazil(),
+}
+
+
 def route_traffic(region):
     """Violation 6: Long if-else chain for traffic routing (8 branches)."""
-    if region == 'us-east-1':
-        return route_to_virginia()
-    elif region == 'us-west-2':
-        return route_to_oregon()
-    elif region == 'eu-west-1':
-        return route_to_ireland()
-    elif region == 'eu-central-1':
-        return route_to_frankfurt()
-    elif region == 'ap-southeast-1':
-        return route_to_singapore()
-    elif region == 'ap-northeast-1':
-        return route_to_tokyo()
-    elif region == 'ca-central-1':
-        return route_to_canada()
-    elif region == 'sa-east-1':
-        return route_to_brazil()
-    else:
-        return route_to_default()
+    return _REGION_ROUTES.get(region, route_to_default)()
 
 def parse_log_level(level):
     """Short chain that should NOT be flagged (only 4 branches)."""
