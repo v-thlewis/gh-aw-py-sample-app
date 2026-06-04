@@ -60,6 +60,10 @@ safe-outputs:
     target: "*"
     max: 1
 
+checkout:
+  fetch: ["*"]
+  fetch-depth: 0
+
 tools:
   web-fetch:
   github:
