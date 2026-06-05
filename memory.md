@@ -1,7 +1,7 @@
 # Efficiency Improver Memory
 
 ## Last Updated
-2026-06-04
+2026-06-05
 
 ## Build/Test/Benchmark Commands
 - No build system detected (pure Python scripts, no setup.py/pyproject.toml/Makefile)
@@ -17,14 +17,15 @@
 - Previous PRs #7 (benchmark) and #9 (dict-dispatch) were closed without merging during workflow reinstall (PR #10 merged 2026-06-02T21:32)
 - Dict-dispatch baselines: route_traffic worst 0.1607 µs → 0.1067 µs (−34%), calculate_discount worst 0.1128 µs → 0.0884 µs (−22%)
 - Benchmark baseline (2026-06-04): request_handler import 2.523 ms, traffic_router import 1.706 ms
+- Lazy imports (2026-06-05): ml_pipeline + data_processor import FAILED → ~13 ms; estimated 2-5 s startup savings when deps installed
 
 ## Optimisation Backlog
 
 | Priority | Focus Area | Opportunity | Status |
 |----------|------------|-------------|--------|
-| HIGH | Code-Level | Lazy imports in ml_pipeline.py + data_processor.py | Not yet submitted (heavy deps absent in CI) |
+| HIGH | Code-Level | Lazy imports in ml_pipeline.py + data_processor.py | PR submitted (run 10, branch: efficiency/lazy-imports-1780668717) |
 | MEDIUM | Code-Level | Dict dispatch replacing if-else chains in request_handler.py + traffic_router.py | PR #11 open |
-| MEDIUM | Infrastructure | Benchmark suite (benchmark.py) | PR #15 submitted run 9 |
+| MEDIUM | Infrastructure | Benchmark suite (benchmark.py) | PR #15 open |
 
 ## Completed Work
 - Run 1 (2026-05-28): Lazy-imports branch
@@ -36,14 +37,16 @@
 - Run 7 (2026-06-02 18:29 UTC): PR #9 dict-dispatch submitted
 - Run 8 (2026-06-02 21:34 UTC): PR #11 dict-dispatch-v3 submitted
 - Run 9 (2026-06-04 15:38 UTC): Task 4 (PR #11 healthy), Task 6 (PR #15 benchmark-v2 submitted), Task 7 (monthly summary updated)
+- Run 10 (2026-06-05 14:10 UTC): Task 2 (re-scan), Task 3 (lazy imports PR submitted), Task 7 (monthly summary updated)
 
 ## Work In Progress
 None
 
 ## Backlog Cursor
-Next run: Task 2 (re-scan for new opportunities, esp. lazy imports), Task 5 (check efficiency issues), Task 7.
+Next run: Task 4 (check lazy-imports PR + PR #11 + PR #15 for CI issues), Task 5 (check efficiency issues), Task 7.
 
 ## Round-Robin Task History
 - Run 8: Task 3, Task 7
 - Run 9: Task 4, Task 6, Task 7
-  - Next run: Task 2, Task 5, Task 7
+- Run 10: Task 2, Task 3, Task 7
+  - Next run: Task 4, Task 5, Task 7
