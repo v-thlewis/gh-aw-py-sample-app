@@ -1,23 +1,28 @@
 # Efficiency Improver Memory
 
 ## Last Updated
-2026-06-08
+2026-06-09
 
 ## Build/Test/Benchmark Commands
 - No build system detected (pure Python scripts, no setup.py/pyproject.toml/Makefile)
 - No test suite found
+- Python version: 3.13.13
+- Compile check: `python3 -m py_compile <file>.py`
 - Lint: not configured
 - Run individual files: `python3 <file>.py`
 - Benchmark: `python3 benchmark.py` (once PR #15 merged)
+- Quick dispatch bench: `python3 -c "import time; from request_handler import calculate_discount; t0=time.perf_counter(); [calculate_discount('SENIOR') for _ in range(100000)]; print(f'{(time.perf_counter()-t0)/1e5*1e6:.4f} us/call')"`
+- Last validated: 2026-06-09
 
 ## Efficiency Notes
 - Four Python files: ml_pipeline.py, data_processor.py, request_handler.py, traffic_router.py
 - Files are intentionally annotated with "violation" comments — demo/sample app
-- Python 3.13
+- Python 3.13.13
 - Previous PRs #7 (benchmark) and #9 (dict-dispatch) were closed without merging during workflow reinstall (PR #10 merged 2026-06-02T21:32)
 - Dict-dispatch baselines: route_traffic worst 0.1607 µs → 0.1067 µs (−34%), calculate_discount worst 0.1128 µs → 0.0884 µs (−22%)
 - Benchmark baseline (2026-06-04): request_handler import 2.523 ms, traffic_router import 1.706 ms
 - Lazy imports (2026-06-05): ml_pipeline + data_processor import FAILED → ~13 ms; estimated 2-5 s startup savings when deps installed
+- Current baseline (2026-06-09, main): route_traffic worst 0.1760 µs, calculate_discount worst 0.1106 µs, get_status_message worst 0.1436 µs, request_handler import ~14.5 ms
 
 ## Optimisation Backlog
 
@@ -41,16 +46,17 @@
 - Run 10 (2026-06-05 14:10 UTC): Task 2 (re-scan), Task 3 (lazy imports PR #16 submitted), Task 7 (monthly summary updated)
 - Run 11 (2026-06-06 11:02 UTC): Task 4 (PRs #11/#15/#16 healthy), Task 5 (no new human comments), Task 7 (monthly summary updated)
 - Run 12 (2026-06-07 11:22 UTC): Task 2 (rescan, no new opportunities), Task 6 (created CI benchmark integration issue #17), Task 7 (monthly summary updated)
-- Run 13 (2026-06-08 17:00 UTC): Task 4 (PRs #11/#15/#16 healthy, no comments), Task 5 (no new human comments on issues #12/#17), Task 7 (monthly summary updated; fixed broken #aw_ci_bench → #17)
+- Run 13 (2026-06-08 17:00 UTC): Task 4 (PRs #11/#15/#16 healthy, no comments), Task 5 (no new human comments on issues #12/#17), Task 7 (monthly summary updated)
+- Run 14 (2026-06-09 14:03 UTC): Task 1 (commands validated, Python 3.13.13), Task 2 (rescan — no new opportunities), Task 4 (PRs #11/#15/#16 healthy), Task 7 (monthly summary updated)
 
 ## Work In Progress
 None
 
 ## Backlog Cursor
-Next run: Task 1 (validate commands), Task 2 (rescan for new opportunities), Task 7.
+Next run: Task 4 (PR maintenance), Task 5 (check efficiency issues for new comments), Task 7.
 
 ## Round-Robin Task History
-- Run 11: Task 4, Task 5, Task 7
 - Run 12: Task 2, Task 6, Task 7
 - Run 13: Task 4, Task 5, Task 7
-  - Next run: Task 1, Task 2, Task 7
+- Run 14: Task 1, Task 2, Task 4, Task 7
+  - Next run: Task 4, Task 5, Task 7
