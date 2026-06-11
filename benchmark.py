@@ -7,7 +7,12 @@ Run with: python3 benchmark.py
 Results are printed to stdout; redirect to a file to track over time.
 """
 import time
-import tracemalloc
+
+try:
+    import tracemalloc
+    _HAS_TRACEMALLOC = True
+except ImportError:
+    _HAS_TRACEMALLOC = False  # PyPy and some other runtimes lack tracemalloc
 
 
 def _time_it(fn, iterations: int = 100_000) -> tuple[float, float]:
@@ -20,7 +25,9 @@ def _time_it(fn, iterations: int = 100_000) -> tuple[float, float]:
 
 
 def _mem_it(fn) -> int:
-    """Return peak memory (bytes) for a single call."""
+    """Return peak memory (bytes) for a single call, or -1 if tracemalloc unavailable."""
+    if not _HAS_TRACEMALLOC:
+        return -1
     tracemalloc.start()
     fn()
     _, peak = tracemalloc.get_traced_memory()
@@ -102,7 +109,10 @@ def bench_memory():
         import request_handler as rh
 
         peak = _mem_it(lambda: rh.get_status_message(200))
-        print(f"  get_status_message peak alloc: {peak:,} bytes")
+        if peak == -1:
+            print("  get_status_message peak alloc: N/A (tracemalloc not available on this runtime)")
+        else:
+            print(f"  get_status_message peak alloc: {peak:,} bytes")
 
     except Exception as exc:
         print(f"  SKIPPED: {exc}")
