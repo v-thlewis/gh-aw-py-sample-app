@@ -2,19 +2,6 @@
 Additional test file with more if-else chain violations.
 """
 
-# O(1) dispatch table — module-level to avoid rebuilding on every call
-_REGION_ROUTES = {
-    'us-east-1': lambda: route_to_virginia(),
-    'us-west-2': lambda: route_to_oregon(),
-    'eu-west-1': lambda: route_to_ireland(),
-    'eu-central-1': lambda: route_to_frankfurt(),
-    'ap-southeast-1': lambda: route_to_singapore(),
-    'ap-northeast-1': lambda: route_to_tokyo(),
-    'ca-central-1': lambda: route_to_canada(),
-    'sa-east-1': lambda: route_to_brazil(),
-}
-
-
 def route_traffic(region):
     """Violation 6: Long if-else chain for traffic routing (8 branches)."""
     return _REGION_ROUTES.get(region, route_to_default)()
@@ -59,3 +46,16 @@ def route_to_brazil():
 
 def route_to_default():
     return "Routing to default region"
+
+
+# O(1) dispatch table — module-level to avoid rebuilding on every call
+_REGION_ROUTES = {
+    'us-east-1': route_to_virginia,
+    'us-west-2': route_to_oregon,
+    'eu-west-1': route_to_ireland,
+    'eu-central-1': route_to_frankfurt,
+    'ap-southeast-1': route_to_singapore,
+    'ap-northeast-1': route_to_tokyo,
+    'ca-central-1': route_to_canada,
+    'sa-east-1': route_to_brazil,
+}
