@@ -1,25 +1,21 @@
 """
-Test file with intentional lazy import violations.
-This file imports heavy dependencies at the top level but only uses them inside functions.
+ML pipeline module. Heavy dependencies (torch, numpy, matplotlib, sklearn)
+are loaded lazily inside each function to minimise startup cost and memory.
 """
 
-# Violation 1: torch imported at top level but only used in a function
-import torch
-import numpy as np
-
-# Violation 2: matplotlib imported at top level but only used in a function  
-import matplotlib.pyplot as plt
-from sklearn import datasets
 
 def measure_gpu_performance():
-    """Function that uses torch - this should have lazy import."""
+    """Function that uses torch - lazy import defers startup cost to call time."""
+    import torch
+    import numpy as np
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     tensor = torch.randn(1000, 1000, device=device)
     result = torch.matmul(tensor, tensor.t())
     return result.cpu().numpy()
 
 def create_visualization(data):
-    """Function that uses matplotlib - this should have lazy import."""
+    """Function that uses matplotlib - lazy import defers startup cost to call time."""
+    import matplotlib.pyplot as plt
     plt.figure(figsize=(10, 6))
     plt.plot(data)
     plt.title("Performance Visualization")
@@ -28,17 +24,17 @@ def create_visualization(data):
     plt.show()
 
 def load_sample_data():
-    """Function that uses sklearn - this should have lazy import."""
+    """Function that uses sklearn - lazy import defers startup cost to call time."""
+    from sklearn import datasets
     iris = datasets.load_iris()
     return iris.data, iris.target
 
 def process_data():
-    """Function that uses numpy - this should have lazy import."""
+    """Function that uses numpy - lazy import defers startup cost to call time."""
+    import numpy as np
     data = np.random.rand(100, 10)
     return np.mean(data, axis=0)
 
-# This module-level usage prevents torch from being lazy imported
-# but the other imports can still be made lazy
 if __name__ == "__main__":
     print("Starting ML pipeline...")
     performance_data = measure_gpu_performance()
