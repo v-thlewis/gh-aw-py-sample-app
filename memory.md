@@ -1,28 +1,28 @@
 # Efficiency Improver Memory
 
 ## Last Updated
-2026-06-11
+2026-06-11 21:32 UTC
 
 ## Build/Test/Benchmark Commands
 - No build system detected (pure Python scripts, no setup.py/pyproject.toml/Makefile)
 - No test suite found
-- Python version: 3.13.13
+- Python runtime: PyPy 7.3.23 (Python 3.11 compat) — JIT compiler; benchmarks faster than CPython
 - Compile check: `python3 -m py_compile <file>.py`
 - Lint: not configured
 - Run individual files: `python3 <file>.py`
 - Benchmark: `python3 benchmark.py` (once PR #15 merged)
 - Quick dispatch bench: `python3 -c "import time; from request_handler import calculate_discount; t0=time.perf_counter(); [calculate_discount('SENIOR') for _ in range(100000)]; print(f'{(time.perf_counter()-t0)/1e5*1e6:.4f} us/call')"`
-- Last validated: 2026-06-09
+- Last validated: 2026-06-11 (PyPy 7.3.23, Python 3.11)
 
 ## Efficiency Notes
 - Four Python files: ml_pipeline.py, data_processor.py, request_handler.py, traffic_router.py
 - Files are intentionally annotated with "violation" comments — demo/sample app
-- Python 3.13.13
+- Python runtime changed to PyPy 7.3.23 (Python 3.11 compat) — JIT gives much faster benchmarks vs CPython baselines
 - Previous PRs #7 (benchmark) and #9 (dict-dispatch) were closed without merging during workflow reinstall (PR #10 merged 2026-06-02T21:32)
-- Dict-dispatch baselines: route_traffic worst 0.1607 µs → 0.1067 µs (−34%), calculate_discount worst 0.1128 µs → 0.0884 µs (−22%)
-- Benchmark baseline (2026-06-04): request_handler import 2.523 ms, traffic_router import 1.706 ms
+- Dict-dispatch baselines (CPython 3.13): route_traffic worst 0.1607 µs → 0.1067 µs (−34%), calculate_discount worst 0.1128 µs → 0.0884 µs (−22%)
+- Benchmark baseline (2026-06-04, CPython): request_handler import 2.523 ms, traffic_router import 1.706 ms
 - Lazy imports (2026-06-05): ml_pipeline + data_processor import FAILED → ~13 ms; estimated 2-5 s startup savings when deps installed
-- Current baseline (2026-06-09, main): route_traffic worst 0.1760 µs, calculate_discount worst 0.1106 µs, get_status_message worst 0.1436 µs, request_handler import ~14.5 ms
+- Current baseline (2026-06-11, main, PyPy 7.3.23): route_traffic worst 0.0844 µs, calculate_discount worst 0.0497 µs, get_status_message worst 0.0217 µs
 - .github/agents and .github/aw contain only markdown/JSON config files — no executable Python to optimize
 - parse_log_level in traffic_router.py intentionally marked "should NOT be flagged" (4 branches only)
 
@@ -53,15 +53,16 @@
 - Run 15 (2026-06-10 16:50 UTC): Task 4 (PRs #11/#15/#16 healthy — no new comments/CI failures), Task 5 (no new human comments on #17 or PRs), Task 7 (monthly summary updated)
 - Run 16 (2026-06-11 17:49 UTC): Task 2 (rescan — no new opportunities; all violations covered by open PRs), Task 4 (PRs #11/#15/#16 healthy), Task 7 (monthly summary updated)
 - Run 17 (2026-06-11 21:25 UTC): Task 4 (PRs #11/#15/#16 healthy — no new comments/CI failures), Task 5 (no new human comments on #17 or PRs), Task 7 (monthly summary updated)
+- Run 18 (2026-06-11 21:32 UTC): Task 1 (re-validated — Python now PyPy 7.3.23/Python 3.11; benchmarks faster due to JIT), Task 4 (PRs #11/#15/#16 healthy), Task 7 (monthly summary updated)
 
 ## Work In Progress
 None
 
 ## Backlog Cursor
-Next run: Task 4, Task 5, Task 7. All Python files fully covered by open PRs — no new Task 3 work until a PR is merged or a new file is added.
+Next run: Task 2 (rescan), Task 4, Task 7. Python env now PyPy — note CPython baselines in PRs #11/#15 were measured on CPython 3.13.
 
 ## Round-Robin Task History
-- Run 15: Task 4, Task 5, Task 7
 - Run 16: Task 2, Task 4, Task 7
 - Run 17: Task 4, Task 5, Task 7
-  - Next run: Task 1 (re-validate commands), Task 4, Task 7
+- Run 18: Task 1, Task 4, Task 7
+  - Next run: Task 2 (rescan), Task 5, Task 7
