@@ -5,10 +5,25 @@
       "version": "v9.0.0",
       "sha": "3a2844b7e9c422d3c10d287c895573f7108da1b3"
     },
+    "actions/setup-python@v6.2.0": {
+      "repo": "actions/setup-python",
+      "version": "v6.2.0",
+      "sha": "a309ff8b426b58ec0e2a45f0f869d46889d02405"
+    },
+    "github/gh-aw-actions/setup-cli@v0.77.5": {
+      "repo": "github/gh-aw-actions/setup-cli",
+      "version": "v0.77.5",
+      "sha": "3ea13c02d765410340d533515cb31a7eef2baaf0"
+    },
     "github/gh-aw-actions/setup@v0.77.5": {
       "repo": "github/gh-aw-actions/setup",
       "version": "v0.77.5",
       "sha": "3ea13c02d765410340d533515cb31a7eef2baaf0"
+    },
+    "github/gh-aw/actions/setup-cli@v0.77.5": {
+      "repo": "github/gh-aw/actions/setup-cli",
+      "version": "v0.77.5",
+      "sha": "f990bbb7eb83981a203d4b5eccdc24f677e950c7"
     }
   }
 }
