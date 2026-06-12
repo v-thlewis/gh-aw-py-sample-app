@@ -37,6 +37,16 @@ def upload_to_s3(data, bucket_name, key):
     )
     return response
 
+def batch_upload(data_list, bucket_name):
+    """Upload multiple datasets to S3."""
+    results = []
+    for i in range(len(data_list)):
+        key = "data_" + str(i) + ".csv"
+        result = upload_to_s3(data_list[i], bucket_name, key)
+        results.append(result)
+    return results
+
+
 def main():
     processor = DataProcessor()
     
