@@ -1,0 +1,26 @@
+{
+  "date": "2026-06-12",
+  "period_days": 30,
+  "overall": {
+    "total_runs": 4,
+    "total_ai_credits": 0,
+    "total_tokens": 4185117,
+    "total_action_minutes": 37
+  },
+  "workflows": [
+    {
+      "workflow_name": "Efficiency Improver",
+      "run_count": 4,
+      "total_ai_credits": 0,
+      "avg_ai_credits": 0.0,
+      "total_tokens": 4185117,
+      "avg_tokens": 1046279,
+      "total_turns": 63,
+      "avg_turns": 15.75,
+      "total_action_minutes": 37,
+      "error_count": 0,
+      "warning_count": 0,
+      "latest_run_url": "https://github.com/v-thlewis/gh-aw-py-sample-app/actions/runs/27421858329"
+    }
+  ]
+}
