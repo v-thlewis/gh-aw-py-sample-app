@@ -1,0 +1,12 @@
+[
+  {
+    "date": "2026-06-12",
+    "workflow_name": "Efficiency Improver",
+    "total_ai_credits_analyzed": 0.0,
+    "total_tokens_analyzed": 4185117,
+    "runs_audited": 10,
+    "recommendations_count": 4,
+    "subagent_candidates": 1,
+    "estimated_aic_savings_per_run": 0.0
+  }
+]
