@@ -3,16 +3,78 @@ Test file with intentional if-else chain violations.
 Contains multiple long if-else chains that should be converted to match/case or dict dispatch.
 """
 
-# O(1) dispatch tables — module-level to avoid rebuilding on every call
+# Helper functions defined first so dispatch tables can reference them directly
+# (avoids lambda wrappers and the extra call frame they introduce)
+
+def handle_get_request():
+    return "Handling GET request"
+
+def handle_post_request():
+    return "Handling POST request"
+
+def handle_put_request():
+    return "Handling PUT request"
+
+def handle_delete_request():
+    return "Handling DELETE request"
+
+def handle_patch_request():
+    return "Handling PATCH request"
+
+def handle_head_request():
+    return "Handling HEAD request"
+
+def handle_options_request():
+    return "Handling OPTIONS request"
+
+def handle_trace_request():
+    return "Handling TRACE request"
+
+def handle_unknown_request():
+    return "Handling unknown request"
+
+def process_text_file():
+    return "Processing text file"
+
+def process_csv_file():
+    return "Processing CSV file"
+
+def process_json_file():
+    return "Processing JSON file"
+
+def process_xml_file():
+    return "Processing XML file"
+
+def process_pdf_file():
+    return "Processing PDF file"
+
+def process_docx_file():
+    return "Processing DOCX file"
+
+def process_xlsx_file():
+    return "Processing XLSX file"
+
+def process_zip_file():
+    return "Processing ZIP file"
+
+def process_tarball():
+    return "Processing tarball"
+
+def process_unknown_file():
+    return "Processing unknown file type"
+
+
+# O(1) dispatch tables — module-level to avoid rebuilding on every call.
+# Direct function references avoid the extra lambda call frame.
 _REQUEST_TYPE_HANDLERS = {
-    'GET': lambda: handle_get_request(),
-    'POST': lambda: handle_post_request(),
-    'PUT': lambda: handle_put_request(),
-    'DELETE': lambda: handle_delete_request(),
-    'PATCH': lambda: handle_patch_request(),
-    'HEAD': lambda: handle_head_request(),
-    'OPTIONS': lambda: handle_options_request(),
-    'TRACE': lambda: handle_trace_request(),
+    'GET': handle_get_request,
+    'POST': handle_post_request,
+    'PUT': handle_put_request,
+    'DELETE': handle_delete_request,
+    'PATCH': handle_patch_request,
+    'HEAD': handle_head_request,
+    'OPTIONS': handle_options_request,
+    'TRACE': handle_trace_request,
 }
 
 _STATUS_MESSAGES = {
@@ -26,15 +88,15 @@ _STATUS_MESSAGES = {
 }
 
 _FILE_EXTENSION_HANDLERS = {
-    '.txt': lambda: process_text_file(),
-    '.csv': lambda: process_csv_file(),
-    '.json': lambda: process_json_file(),
-    '.xml': lambda: process_xml_file(),
-    '.pdf': lambda: process_pdf_file(),
-    '.docx': lambda: process_docx_file(),
-    '.xlsx': lambda: process_xlsx_file(),
-    '.zip': lambda: process_zip_file(),
-    '.tar.gz': lambda: process_tarball(),
+    '.txt': process_text_file,
+    '.csv': process_csv_file,
+    '.json': process_json_file,
+    '.xml': process_xml_file,
+    '.pdf': process_pdf_file,
+    '.docx': process_docx_file,
+    '.xlsx': process_xlsx_file,
+    '.zip': process_zip_file,
+    '.tar.gz': process_tarball,
 }
 
 _DISCOUNTS = {
@@ -107,61 +169,3 @@ class EventProcessor:
     
     def process_unknown_event(self):
         return "Processing unknown event"
-
-# Helper functions for the violations above
-def handle_get_request():
-    return "Handling GET request"
-
-def handle_post_request():
-    return "Handling POST request"
-
-def handle_put_request():
-    return "Handling PUT request"
-
-def handle_delete_request():
-    return "Handling DELETE request"
-
-def handle_patch_request():
-    return "Handling PATCH request"
-
-def handle_head_request():
-    return "Handling HEAD request"
-
-def handle_options_request():
-    return "Handling OPTIONS request"
-
-def handle_trace_request():
-    return "Handling TRACE request"
-
-def handle_unknown_request():
-    return "Handling unknown request"
-
-def process_text_file():
-    return "Processing text file"
-
-def process_csv_file():
-    return "Processing CSV file"
-
-def process_json_file():
-    return "Processing JSON file"
-
-def process_xml_file():
-    return "Processing XML file"
-
-def process_pdf_file():
-    return "Processing PDF file"
-
-def process_docx_file():
-    return "Processing DOCX file"
-
-def process_xlsx_file():
-    return "Processing XLSX file"
-
-def process_zip_file():
-    return "Processing ZIP file"
-
-def process_tarball():
-    return "Processing tarball"
-
-def process_unknown_file():
-    return "Processing unknown file type"
