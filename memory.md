@@ -1,7 +1,7 @@
 # Efficiency Improver Memory
 
 ## Last Updated
-2026-06-14 11:50 UTC
+2026-06-15 19:18 UTC
 
 ## Build/Test/Benchmark Commands
 - No build system detected (pure Python scripts, no setup.py/pyproject.toml/Makefile)
@@ -31,6 +31,7 @@
 - traffic_router.py already uses direct function refs (no lambdas) — request_handler.py now consistent (PR #25)
 - parse_log_level in traffic_router.py intentionally marked "should NOT be flagged" (4 branches only)
 - .github/agents and .github/aw contain only markdown/JSON config files — no executable Python to optimize
+- request_handler.py on main: dispatch tables still have lambda wrappers (PR #25 open, not merged yet)
 
 ## Optimisation Backlog
 
@@ -38,7 +39,7 @@
 |----------|------------|-------------|--------|
 | HIGH | Network I/O | `batch_upload` in PR #21: N sequential blocking S3 uploads → ThreadPoolExecutor | Commented on PR #21 (run 21) |
 | MEDIUM | Infrastructure | CI benchmark workflow for automated regression detection | Issue #17 open |
-| LOW | Code-Level | Replace lambdas in dispatch tables with direct refs | ✅ Done — PR #25 submitted (run 22) |
+| LOW | Code-Level | Replace lambdas in dispatch tables with direct refs | ✅ Done — PR #25 open, awaiting merge |
 
 ## Completed Work
 - Run 1–11: See previous memory (lazy imports PR #16, dict-dispatch PR #11, benchmark PR #15)
@@ -48,15 +49,17 @@
 - Run 20 (2026-06-12): PR #18 healthy maintenance
 - Run 21 (2026-06-13): Commented on PR #21 (batch_upload ThreadPoolExecutor)
 - Run 22 (2026-06-14): PR #25 (lambda → direct refs in request_handler dispatch tables)
+- Run 23 (2026-06-15): Task 5/6/7 — no new human comments; infrastructure assessment; fixed #aw_pr25 bug in issue #12 monthly summary
 
 ## Work In Progress
 None
 
 ## Backlog Cursor
-Next run: Task 4 (check PR #18 and PR #25 status), Task 5 (check for new human comments on issue #17 / PR #21), Task 7.
+Next run: Task 1 (revalidate commands), Task 2 (rescan for new opportunities), Task 7.
 
 ## Round-Robin Task History
 - Run 20: Task 4, Task 5, Task 7
 - Run 21: Task 2, Task 5, Task 7
 - Run 22: Task 3, Task 4, Task 7
-  - Next run: Task 5, Task 6, Task 7
+- Run 23: Task 5, Task 6, Task 7
+  - Next run: Task 1, Task 2, Task 7
