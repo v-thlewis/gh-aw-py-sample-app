@@ -1,7 +1,7 @@
 # Efficiency Improver Memory
 
 ## Last Updated
-2026-06-15 19:18 UTC
+2026-06-16 20:14 UTC
 
 ## Build/Test/Benchmark Commands
 - No build system detected (pure Python scripts, no setup.py/pyproject.toml/Makefile)
@@ -12,7 +12,7 @@
 - Run individual files: `python3 <file>.py`
 - Benchmark: `python3 benchmark.py` ⚠️ crashes on PyPy (PR #18 fixes it, awaiting merge)
 - Quick dispatch bench: `python3 -c "import time; from request_handler import process_request_type; t0=time.perf_counter(); [process_request_type('TRACE') for _ in range(100000)]; print(f'{(time.perf_counter()-t0)/1e5*1e6:.4f} us/call')"`
-- Last validated: 2026-06-14 (PyPy 7.3.23, Python 3.11)
+- Last validated: 2026-06-16 (PyPy 7.3.23, Python 3.11)
 
 ## Efficiency Notes
 - Four Python files: ml_pipeline.py, data_processor.py, request_handler.py, traffic_router.py
@@ -26,20 +26,23 @@
 - Post-merge benchmarks (PyPy 7.3.23, 2026-06-11):
   - request_handler import: ~0.479 ms, traffic_router: ~0.328 ms
   - data_processor import: ~0.847 ms, ml_pipeline: ~0.756 ms
-  - Dispatch worst-cases (JIT-warm): 0.019–0.021 µs/call (stable as of 2026-06-13)
-- Lambda vs direct ref: PyPy JIT back-to-back: lambda=0.0132µs mean, direct=0.0110µs mean (-16.5%); CPython synthetic: -25.9%
-- traffic_router.py already uses direct function refs (no lambdas) — request_handler.py now consistent (PR #25)
+  - Dispatch worst-cases (JIT-warm): 0.019–0.038 µs/call (2026-06-16 revalidation)
+- Lambda vs direct ref: request_handler (lambda) ~0.038 µs vs traffic_router (direct) ~0.026 µs
+- traffic_router.py uses direct function refs (no lambdas) — PR #25 pending to fix request_handler
 - parse_log_level in traffic_router.py intentionally marked "should NOT be flagged" (4 branches only)
 - .github/agents and .github/aw contain only markdown/JSON config files — no executable Python to optimize
-- request_handler.py on main: dispatch tables still have lambda wrappers (PR #25 open, not merged yet)
+- load_sample_data() in ml_pipeline.py — PR #aw_pr_lru adds lru_cache to avoid repeated disk I/O
+- upload_to_s3() creates new boto3 client on every call — potential caching opportunity for backlog
 
 ## Optimisation Backlog
 
 | Priority | Focus Area | Opportunity | Status |
 |----------|------------|-------------|--------|
 | HIGH | Network I/O | `batch_upload` in PR #21: N sequential blocking S3 uploads → ThreadPoolExecutor | Commented on PR #21 (run 21) |
+| MEDIUM | Data | `upload_to_s3` in data_processor.py: creates new boto3 client every call → cache at module level | Identified 2026-06-16 |
 | MEDIUM | Infrastructure | CI benchmark workflow for automated regression detection | Issue #17 open |
 | LOW | Code-Level | Replace lambdas in dispatch tables with direct refs | ✅ Done — PR #25 open, awaiting merge |
+| LOW | Data | `load_sample_data()` in ml_pipeline.py: repeated disk I/O → lru_cache | ✅ Done — PR #aw_pr_lru open, awaiting merge |
 
 ## Completed Work
 - Run 1–11: See previous memory (lazy imports PR #16, dict-dispatch PR #11, benchmark PR #15)
@@ -49,17 +52,18 @@
 - Run 20 (2026-06-12): PR #18 healthy maintenance
 - Run 21 (2026-06-13): Commented on PR #21 (batch_upload ThreadPoolExecutor)
 - Run 22 (2026-06-14): PR #25 (lambda → direct refs in request_handler dispatch tables)
-- Run 23 (2026-06-15): Task 5/6/7 — no new human comments; infrastructure assessment; fixed #aw_pr25 bug in issue #12 monthly summary
+- Run 23 (2026-06-15): Task 5/6/7 — no new human comments; infrastructure assessment
+- Run 24 (2026-06-16): Task 1 (revalidate), Task 2 (rescan → found lru_cache + boto3 client opportunities), Task 3 (PR #aw_pr_lru: lru_cache on load_sample_data), Task 7
 
 ## Work In Progress
 None
 
 ## Backlog Cursor
-Next run: Task 1 (revalidate commands), Task 2 (rescan for new opportunities), Task 7.
+Next run: Task 4 (check PRs #18, #25, new PR), Task 5 (check issues for new human comments), Task 7.
 
 ## Round-Robin Task History
-- Run 20: Task 4, Task 5, Task 7
 - Run 21: Task 2, Task 5, Task 7
 - Run 22: Task 3, Task 4, Task 7
 - Run 23: Task 5, Task 6, Task 7
-  - Next run: Task 1, Task 2, Task 7
+- Run 24: Task 1, Task 2, Task 3, Task 7
+  - Next run: Task 4, Task 5, Task 7
