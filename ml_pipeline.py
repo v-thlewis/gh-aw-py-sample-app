@@ -2,6 +2,7 @@
 ML pipeline module. Heavy dependencies (torch, numpy, matplotlib, sklearn)
 are loaded lazily inside each function to minimise startup cost and memory.
 """
+import functools
 
 
 def measure_gpu_performance():
@@ -23,8 +24,14 @@ def create_visualization(data):
     plt.ylabel("Value")
     plt.show()
 
+@functools.lru_cache(maxsize=1)
 def load_sample_data():
-    """Function that uses sklearn - lazy import defers startup cost to call time."""
+    """Function that uses sklearn - lazy import defers startup cost to call time.
+
+    lru_cache avoids repeated disk I/O and parsing on every call: the iris
+    dataset is parsed once, then returned from memory on all subsequent calls.
+    Trade-off: returned arrays are shared objects — callers must not mutate them.
+    """
     from sklearn import datasets
     iris = datasets.load_iris()
     return iris.data, iris.target
