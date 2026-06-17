@@ -28,5 +28,15 @@
     "recommendations_count": 4,
     "subagent_candidates": 1,
     "estimated_aic_savings_per_run": 87.0
+  },
+  {
+    "date": "2026-06-17",
+    "workflow_name": "Grumpy Code Reviewer \ud83d\udd25",
+    "total_ai_credits_analyzed": 138.55886999999998,
+    "total_tokens_analyzed": 0,
+    "runs_audited": 3,
+    "recommendations_count": 5,
+    "subagent_candidates": 1,
+    "estimated_aic_savings_per_run": 30.0
   }
 ]
