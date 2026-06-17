@@ -1,7 +1,7 @@
 # Efficiency Improver Memory
 
 ## Last Updated
-2026-06-16 20:14 UTC
+2026-06-17 17:00 UTC
 
 ## Build/Test/Benchmark Commands
 - No build system detected (pure Python scripts, no setup.py/pyproject.toml/Makefile)
@@ -30,19 +30,18 @@
 - Lambda vs direct ref: request_handler (lambda) ~0.038 µs vs traffic_router (direct) ~0.026 µs
 - traffic_router.py uses direct function refs (no lambdas) — PR #25 pending to fix request_handler
 - parse_log_level in traffic_router.py intentionally marked "should NOT be flagged" (4 branches only)
-- .github/agents and .github/aw contain only markdown/JSON config files — no executable Python to optimize
-- load_sample_data() in ml_pipeline.py — PR #aw_pr_lru adds lru_cache to avoid repeated disk I/O
-- upload_to_s3() creates new boto3 client on every call — potential caching opportunity for backlog
+- load_sample_data() in ml_pipeline.py — PR #29 adds lru_cache to avoid repeated disk I/O
+- upload_to_s3() — PR #32 caches boto3 client with lru_cache; uncached 0.668 µs/call → cached 0.199 µs/call (−70%)
 
 ## Optimisation Backlog
 
 | Priority | Focus Area | Opportunity | Status |
 |----------|------------|-------------|--------|
 | HIGH | Network I/O | `batch_upload` in PR #21: N sequential blocking S3 uploads → ThreadPoolExecutor | Commented on PR #21 (run 21) |
-| MEDIUM | Data | `upload_to_s3` in data_processor.py: creates new boto3 client every call → cache at module level | Identified 2026-06-16 |
 | MEDIUM | Infrastructure | CI benchmark workflow for automated regression detection | Issue #17 open |
 | LOW | Code-Level | Replace lambdas in dispatch tables with direct refs | ✅ Done — PR #25 open, awaiting merge |
-| LOW | Data | `load_sample_data()` in ml_pipeline.py: repeated disk I/O → lru_cache | ✅ Done — PR #aw_pr_lru open, awaiting merge |
+| LOW | Data | Cache `load_sample_data()` with `lru_cache` | ✅ Done — PR #29 open, awaiting merge |
+| LOW | Data | Cache boto3 S3 client with `lru_cache` | ✅ Done — PR #32 open, awaiting merge |
 
 ## Completed Work
 - Run 1–11: See previous memory (lazy imports PR #16, dict-dispatch PR #11, benchmark PR #15)
@@ -53,17 +52,19 @@
 - Run 21 (2026-06-13): Commented on PR #21 (batch_upload ThreadPoolExecutor)
 - Run 22 (2026-06-14): PR #25 (lambda → direct refs in request_handler dispatch tables)
 - Run 23 (2026-06-15): Task 5/6/7 — no new human comments; infrastructure assessment
-- Run 24 (2026-06-16): Task 1 (revalidate), Task 2 (rescan → found lru_cache + boto3 client opportunities), Task 3 (PR #aw_pr_lru: lru_cache on load_sample_data), Task 7
+- Run 24 (2026-06-16): Task 1 (revalidate), Task 2 (rescan → found lru_cache + boto3 client opportunities), Task 3 (PR #29: lru_cache on load_sample_data) — run failed after PR creation
+- Run 25 (2026-06-17): Task 4 (PRs #18/#25/#29 all healthy), Task 3 (PR #32: lru_cache on boto3 S3 client), Task 7
 
 ## Work In Progress
 None
 
 ## Backlog Cursor
-Next run: Task 4 (check PRs #18, #25, new PR), Task 5 (check issues for new human comments), Task 7.
+Next run: Task 2 (rescan for new opportunities), Task 4 (check PRs), Task 7.
+All known code-level opportunities have been implemented; next scan may find nothing new.
 
 ## Round-Robin Task History
-- Run 21: Task 2, Task 5, Task 7
 - Run 22: Task 3, Task 4, Task 7
 - Run 23: Task 5, Task 6, Task 7
 - Run 24: Task 1, Task 2, Task 3, Task 7
-  - Next run: Task 4, Task 5, Task 7
+- Run 25: Task 3, Task 4, Task 7
+  - Next run: Task 2, Task 5, Task 7
