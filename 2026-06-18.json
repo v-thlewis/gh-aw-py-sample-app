@@ -1,0 +1,40 @@
+{
+  "date": "2026-06-18",
+  "period_days": 1,
+  "overall": {
+    "total_runs": 2,
+    "total_ai_credits": 928.45458,
+    "total_tokens": 2699847,
+    "total_action_minutes": 25.0
+  },
+  "workflows": [
+    {
+      "workflow_name": "Efficiency Improver",
+      "run_count": 1,
+      "total_ai_credits": 637.10082,
+      "avg_ai_credits": 637.10082,
+      "total_tokens": 1865417,
+      "avg_tokens": 1865417,
+      "total_turns": 26,
+      "avg_turns": 26.0,
+      "total_action_minutes": 14.0,
+      "error_count": 0,
+      "warning_count": 0,
+      "latest_run_url": "https://github.com/v-thlewis/gh-aw-py-sample-app/actions/runs/27775042899"
+    },
+    {
+      "workflow_name": "Agentic Workflow AIC Usage Optimizer",
+      "run_count": 1,
+      "total_ai_credits": 291.35376,
+      "avg_ai_credits": 291.35376,
+      "total_tokens": 834430,
+      "avg_tokens": 834430,
+      "total_turns": 26,
+      "avg_turns": 26.0,
+      "total_action_minutes": 11.0,
+      "error_count": 0,
+      "warning_count": 0,
+      "latest_run_url": "https://github.com/v-thlewis/gh-aw-py-sample-app/actions/runs/27720754773"
+    }
+  ]
+}
