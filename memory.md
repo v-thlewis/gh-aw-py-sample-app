@@ -1,7 +1,7 @@
 # Efficiency Improver Memory
 
 ## Last Updated
-2026-06-17 17:00 UTC
+2026-06-18 16:49 UTC
 
 ## Build/Test/Benchmark Commands
 - No build system detected (pure Python scripts, no setup.py/pyproject.toml/Makefile)
@@ -32,12 +32,15 @@
 - parse_log_level in traffic_router.py intentionally marked "should NOT be flagged" (4 branches only)
 - load_sample_data() in ml_pipeline.py — PR #29 adds lru_cache to avoid repeated disk I/O
 - upload_to_s3() — PR #32 caches boto3 client with lru_cache; uncached 0.668 µs/call → cached 0.199 µs/call (−70%)
+- batch_upload() — PR #35 parallelises with ThreadPoolExecutor; simulated benchmark (50ms latency, N=10): 502ms → 104ms (4.8×, −79%)
+- PR #21 (batch_upload with sequential S3 uploads) was MERGED on 2026-06-17 22:24 by v-thlewis
+- Issues/PRs share numbering: #33=agentic-token-audit, #34=agentic-token-optimizer, #35=parallel-batch-upload (our new PR)
 
 ## Optimisation Backlog
 
 | Priority | Focus Area | Opportunity | Status |
 |----------|------------|-------------|--------|
-| HIGH | Network I/O | `batch_upload` in PR #21: N sequential blocking S3 uploads → ThreadPoolExecutor | Commented on PR #21 (run 21) |
+| HIGH | Network I/O | `batch_upload`: N sequential blocking S3 uploads → ThreadPoolExecutor | ✅ Done — PR #35 open, awaiting merge |
 | MEDIUM | Infrastructure | CI benchmark workflow for automated regression detection | Issue #17 open |
 | LOW | Code-Level | Replace lambdas in dispatch tables with direct refs | ✅ Done — PR #25 open, awaiting merge |
 | LOW | Data | Cache `load_sample_data()` with `lru_cache` | ✅ Done — PR #29 open, awaiting merge |
@@ -52,19 +55,21 @@
 - Run 21 (2026-06-13): Commented on PR #21 (batch_upload ThreadPoolExecutor)
 - Run 22 (2026-06-14): PR #25 (lambda → direct refs in request_handler dispatch tables)
 - Run 23 (2026-06-15): Task 5/6/7 — no new human comments; infrastructure assessment
-- Run 24 (2026-06-16): Task 1 (revalidate), Task 2 (rescan → found lru_cache + boto3 client opportunities), Task 3 (PR #29: lru_cache on load_sample_data) — run failed after PR creation
+- Run 24 (2026-06-16): Task 1 (revalidate), Task 2 (rescan → found lru_cache + boto3 client opportunities), Task 3 (PR #29: lru_cache on load_sample_data)
 - Run 25 (2026-06-17): Task 4 (PRs #18/#25/#29 all healthy), Task 3 (PR #32: lru_cache on boto3 S3 client), Task 7
+- Run 26 (2026-06-18): Task 2 (rescan → PR #21 merged, batch_upload on main), Task 3 (PR #35: ThreadPoolExecutor for batch_upload), Task 7
 
 ## Work In Progress
-None
+None — all known opportunities have open PRs.
 
 ## Backlog Cursor
-Next run: Task 2 (rescan for new opportunities), Task 4 (check PRs), Task 7.
-All known code-level opportunities have been implemented; next scan may find nothing new.
+Next run: Task 4 (check all open PRs: #18, #25, #29, #32, #35), Task 5 (check for human comments), Task 7.
+All code-level opportunities addressed; focus on PR maintenance and issue monitoring.
 
 ## Round-Robin Task History
 - Run 22: Task 3, Task 4, Task 7
 - Run 23: Task 5, Task 6, Task 7
 - Run 24: Task 1, Task 2, Task 3, Task 7
 - Run 25: Task 3, Task 4, Task 7
-  - Next run: Task 2, Task 5, Task 7
+- Run 26: Task 2, Task 3, Task 7
+  - Next run: Task 4, Task 5, Task 7
