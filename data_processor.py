@@ -3,12 +3,24 @@ Data processing module. Heavy dependencies (pandas, boto3, plotly, scipy)
 are loaded lazily inside each function to minimise startup cost and memory.
 """
 
+from functools import lru_cache
+
 
 class DataProcessor:
     """Class for processing data with heavy dependencies."""
-    
-    def load_csv_data(self, filepath):
-        """Load CSV data using pandas - lazy import defers startup cost to call time."""
+
+    @staticmethod
+    @lru_cache(maxsize=128)
+    def load_csv_data(filepath):
+        """Load CSV data using pandas - lazy import defers startup cost to call time.
+
+        Results are cached by filepath so repeated calls for the same file avoid
+        disk I/O and pandas parse overhead entirely.
+
+        Note: the cached DataFrame is shared across all callers. Mutating the
+        returned DataFrame will affect all subsequent callers receiving the same
+        cached object. Copy with df.copy() before in-place modifications.
+        """
         import pandas as pd
         df = pd.read_csv(filepath)
         return df.dropna()
