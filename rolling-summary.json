@@ -54,5 +54,13 @@
     "total_runs": 1,
     "total_action_minutes": 11,
     "active_workflows": 1
+  },
+  {
+    "date": "2026-06-23",
+    "total_ai_credits": 713.02404,
+    "total_tokens": 2025405,
+    "total_runs": 3,
+    "total_action_minutes": 34.0,
+    "active_workflows": 3
   }
 ]
