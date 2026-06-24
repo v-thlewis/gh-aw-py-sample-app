@@ -50,13 +50,25 @@ def upload_to_s3(data, bucket_name, key):
     return response
 
 def batch_upload(data_list, bucket_name):
-    """Upload multiple datasets to S3."""
-    results = []
-    for i in range(len(data_list)):
-        key = "data_" + str(i) + ".csv"
-        result = upload_to_s3(data_list[i], bucket_name, key)
-        results.append(result)
-    return results
+    """Upload multiple datasets to S3 in parallel.
+
+    S3 put_object is I/O-bound (network latency dominates). Running uploads
+    concurrently via ThreadPoolExecutor reduces wall-clock time roughly
+    proportionally to the batch size (up to the worker cap), making
+    per-item energy cost independent of batch size rather than additive.
+
+    Trade-off: slightly more complex code; worker cap (8) prevents excessive
+    thread creation for large batches. boto3 S3 client is thread-safe.
+    """
+    from concurrent.futures import ThreadPoolExecutor
+
+    def _upload_one(args):
+        i, data = args
+        return upload_to_s3(data, bucket_name, f"data_{i}.csv")
+
+    max_workers = min(len(data_list), 8)
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        return list(executor.map(_upload_one, enumerate(data_list)))
 
 
 def main():
