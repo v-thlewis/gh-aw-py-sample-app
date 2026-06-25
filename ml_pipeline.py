@@ -15,14 +15,20 @@ def measure_gpu_performance():
     return result.cpu().numpy()
 
 def create_visualization(data):
-    """Function that uses matplotlib - lazy import defers startup cost to call time."""
+    """Function that uses matplotlib - lazy import defers startup cost to call time.
+
+    plt.close(fig) is called after plt.show() to release the Figure object from
+    matplotlib's figure manager. Without it, each call adds a figure to memory
+    that is never released, causing unbounded growth in long-running pipelines.
+    """
     import matplotlib.pyplot as plt
-    plt.figure(figsize=(10, 6))
+    fig = plt.figure(figsize=(10, 6))
     plt.plot(data)
     plt.title("Performance Visualization")
     plt.xlabel("Time")
     plt.ylabel("Value")
     plt.show()
+    plt.close(fig)  # release figure memory; prevents accumulation on repeated calls
 
 @functools.lru_cache(maxsize=1)
 def load_sample_data():
