@@ -31,7 +31,7 @@
   },
   {
     "date": "2026-06-17",
-    "workflow_name": "Grumpy Code Reviewer 🔥",
+    "workflow_name": "Grumpy Code Reviewer \ud83d\udd25",
     "total_ai_credits_analyzed": 138.55886999999998,
     "total_tokens_analyzed": 0,
     "runs_audited": 3,
@@ -118,5 +118,15 @@
     "recommendations_count": 4,
     "subagent_candidates": 2,
     "estimated_aic_savings_per_run": 55.0
+  },
+  {
+    "date": "2026-06-30",
+    "workflow_name": "Agentic Workflow AIC Usage Optimizer",
+    "total_ai_credits_analyzed": 2073.98,
+    "total_tokens_analyzed": 5857257,
+    "runs_audited": 7,
+    "recommendations_count": 4,
+    "subagent_candidates": 0,
+    "estimated_aic_savings_per_run": 47.0
   }
 ]
