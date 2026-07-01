@@ -128,5 +128,15 @@
     "recommendations_count": 4,
     "subagent_candidates": 0,
     "estimated_aic_savings_per_run": 47.0
+  },
+  {
+    "date": "2026-07-01",
+    "workflow_name": "Efficiency Improver",
+    "total_ai_credits_analyzed": 3192.5,
+    "total_tokens_analyzed": 13490331,
+    "runs_audited": 19,
+    "recommendations_count": 5,
+    "subagent_candidates": 2,
+    "estimated_aic_savings_per_run": 43.0
   }
 ]
