@@ -1,7 +1,7 @@
 # Efficiency Improver Memory
 
 ## Last Updated
-2026-07-15 06:38 UTC
+2026-07-16 07:04 UTC
 
 ## Build/Test/Benchmark Commands
 - No build system detected (pure Python scripts, no setup.py/pyproject.toml/Makefile)
@@ -10,7 +10,7 @@
 - Compile check: `python3 -m py_compile <file>.py`
 - Run individual files: `python3 <file>.py`
 - Benchmark: `python3 benchmark.py`
-- Last validated: 2026-07-15 (PyPy 7.3.23, Python 3.11)
+- Last validated: 2026-07-16 (PyPy 7.3.23, Python 3.11)
 
 ## Efficiency Notes
 - Four Python files: ml_pipeline.py, data_processor.py, request_handler.py, traffic_router.py
@@ -18,10 +18,10 @@
 - Python runtime: PyPy 7.3.23 (Python 3.11 compat) — JIT gives faster benchmarks vs CPython baselines
 - All efficiency PRs merged by v-thlewis (PRs #11, #15, #16, #18, #25, #29, #32, #35, #40)
 - PR #49 open (plt.close fix) — LOW priority memory fix; clean, no CI failures
-- Benchmarks (PyPy 7.3.23, 2026-07-15):
-  - request_handler import: ~0.37 ms, traffic_router: ~0.25 ms
-  - data_processor import: ~5.48 ms, ml_pipeline: ~3.28 ms
-  - Dispatch (JIT-warm): ~0.02–0.04 µs/call
+- Benchmarks (PyPy 7.3.23, 2026-07-16):
+  - request_handler import: ~1.33 ms, traffic_router: ~0.82 ms
+  - data_processor import: ~7.46 ms, ml_pipeline: ~5.07 ms
+  - Dispatch (JIT-warm): ~0.02–0.16 µs/call
 - ATO issue #46 closed as not_planned by v-thlewis 2026-06-25 (pattern: maintainer declines ATO suggestions)
 
 ## Optimisation Backlog
@@ -30,11 +30,11 @@
 |----------|------------|-------------|--------|
 | HIGH | Network I/O | `batch_upload`: N sequential blocking S3 uploads → ThreadPoolExecutor | ✅ Merged — PR #35 |
 | MEDIUM | Infrastructure | CI benchmark workflow for automated regression detection | Issue #17 open |
-| LOW | Code-Level | Replace lambdas in dispatch tables with direct refs | ✅ Merged — PR #25 |
-| LOW | Data | Cache `load_sample_data()` with `lru_cache` | ✅ Merged — PR #29 |
-| LOW | Data | Cache boto3 S3 client with `lru_cache` | ✅ Merged — PR #32 |
-| LOW | Data | Cache `load_csv_data()` with `@staticmethod` + `@lru_cache(maxsize=128)` | ✅ Merged — PR #40 |
-| LOW | Code-Level | Close matplotlib figure after `plt.show()` | PR #49 open |
+| LOW | Code-Level | Replace lambdas in dispatch tables with direct refs | ✅ Merged — PR #25 (−16.5% dispatch overhead) |
+| LOW | Data | Cache `load_sample_data()` with `lru_cache` | ✅ Merged — PR #29 (>7 000× speedup) |
+| LOW | Data | Cache boto3 S3 client with `lru_cache` | ✅ Merged — PR #32 (−70% per-call overhead) |
+| LOW | Data | Cache `load_csv_data()` with `@staticmethod` + `@lru_cache(maxsize=128)` | ✅ Merged — PR #40 (89×, −98.9%) |
+| LOW | Code-Level | Close matplotlib figure after `plt.show()` to prevent memory accumulation | PR #49 open |
 
 ## Completed Work
 - Run 1–11: PR #16 (lazy imports), PR #11 (dict-dispatch), PR #15 (benchmark)
@@ -49,16 +49,18 @@
 - Run 34 (2026-06-25): PR #49 (plt.close fix)
 - Run 35–40 (2026-06-26 to 2026-07-01): Maintenance, re-validation, Task 4+7
 - Run 41 (2026-07-15): Task 1 (commands re-validated; benchmarks stable), Task 4, Task 7
+- Run 42 (2026-07-16): Task 2 (rescan — no new opportunities), Task 4, Task 7
 
 ## Work In Progress
 - PR #49: plt.close(fig) in create_visualization() — LOW priority memory fix; open, no CI failures
 
 ## Backlog Cursor
 All major opportunities addressed. PR #49 open for plt.close fix.
-Next run: Task 2 (rescan), Task 4, Task 7.
+Next run: Task 1 (re-validate commands), Task 4, Task 7.
 
 ## Round-Robin Task History
 - Run 39 (2026-06-30): Task 1, Task 4, Task 7
 - Run 40 (2026-07-01): Task 2, Task 4, Task 7
 - Run 41 (2026-07-15): Task 1, Task 4, Task 7
-  - Next run: Task 2 (rescan), Task 4, Task 7
+- Run 42 (2026-07-16): Task 2, Task 4, Task 7
+  - Next run: Task 1, Task 4, Task 7
