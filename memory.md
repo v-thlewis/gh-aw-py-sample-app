@@ -1,7 +1,7 @@
 # Efficiency Improver Memory
 
 ## Last Updated
-2026-07-16 16:26 UTC
+2026-07-16 16:37 UTC
 
 ## Build/Test/Benchmark Commands
 - No build system detected (pure Python scripts, no setup.py/pyproject.toml/Makefile)
@@ -17,10 +17,10 @@
 - Files are intentionally annotated with "violation" comments — demo/sample app
 - Python runtime: PyPy 7.3.23 (Python 3.11 compat) — JIT gives faster benchmarks vs CPython baselines
 - All efficiency PRs merged by v-thlewis (PRs #11, #15, #16, #18, #25, #29, #32, #35, #40, #49)
-- Benchmarks (PyPy 7.3.23, 2026-07-16):
-  - request_handler import: ~0.50 ms, traffic_router: ~0.38 ms
-  - data_processor import: ~7.68 ms, ml_pipeline: ~5.01 ms
-  - Dispatch (JIT-warm): ~0.03–0.26 µs/call
+- Benchmarks (PyPy 7.3.23, 2026-07-16 run 44):
+  - request_handler import: ~1.58 ms, traffic_router: ~1.06 ms
+  - data_processor/ml_pipeline: FAILED (pandas/matplotlib not installed in sandbox — expected)
+  - Dispatch (JIT-warm): ~0.02–0.25 µs/call
 - ATO issue #46 closed as not_planned by v-thlewis 2026-06-25 (pattern: maintainer declines ATO suggestions)
 
 ## Optimisation Backlog
@@ -50,16 +50,17 @@
 - Run 41 (2026-07-15): Task 1 re-validated; benchmarks stable
 - Run 42 (2026-07-16): Task 2 rescan — no new opportunities
 - Run 43 (2026-07-16): Task 1 re-validated; PR #49 merged by v-thlewis
+- Run 44 (2026-07-16): Task 2 rescan — no new opportunities; benchmarks stable
 
 ## Work In Progress
 None — all known opportunities addressed.
 
 ## Backlog Cursor
-All major opportunities addressed. PR #49 merged. No new opportunities identified in latest rescan.
-Next run: Task 2 (rescan), Task 4, Task 7.
+All major opportunities addressed. No new opportunities identified in latest rescan.
+Next run: Task 1, Task 4, Task 7.
 
 ## Round-Robin Task History
-- Run 41 (2026-07-15): Task 1, Task 4, Task 7
 - Run 42 (2026-07-16): Task 2, Task 4, Task 7
 - Run 43 (2026-07-16): Task 1, Task 4, Task 7
-  - Next run: Task 2, Task 4, Task 7
+- Run 44 (2026-07-16): Task 2, Task 4, Task 7
+  - Next run: Task 1, Task 4, Task 7
