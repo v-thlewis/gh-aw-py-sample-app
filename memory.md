@@ -1,7 +1,7 @@
 # Efficiency Improver Memory
 
 ## Last Updated
-2026-07-16 07:04 UTC
+2026-07-16 16:26 UTC
 
 ## Build/Test/Benchmark Commands
 - No build system detected (pure Python scripts, no setup.py/pyproject.toml/Makefile)
@@ -16,12 +16,11 @@
 - Four Python files: ml_pipeline.py, data_processor.py, request_handler.py, traffic_router.py
 - Files are intentionally annotated with "violation" comments — demo/sample app
 - Python runtime: PyPy 7.3.23 (Python 3.11 compat) — JIT gives faster benchmarks vs CPython baselines
-- All efficiency PRs merged by v-thlewis (PRs #11, #15, #16, #18, #25, #29, #32, #35, #40)
-- PR #49 open (plt.close fix) — LOW priority memory fix; clean, no CI failures
+- All efficiency PRs merged by v-thlewis (PRs #11, #15, #16, #18, #25, #29, #32, #35, #40, #49)
 - Benchmarks (PyPy 7.3.23, 2026-07-16):
-  - request_handler import: ~1.33 ms, traffic_router: ~0.82 ms
-  - data_processor import: ~7.46 ms, ml_pipeline: ~5.07 ms
-  - Dispatch (JIT-warm): ~0.02–0.16 µs/call
+  - request_handler import: ~0.50 ms, traffic_router: ~0.38 ms
+  - data_processor import: ~7.68 ms, ml_pipeline: ~5.01 ms
+  - Dispatch (JIT-warm): ~0.03–0.26 µs/call
 - ATO issue #46 closed as not_planned by v-thlewis 2026-06-25 (pattern: maintainer declines ATO suggestions)
 
 ## Optimisation Backlog
@@ -34,7 +33,7 @@
 | LOW | Data | Cache `load_sample_data()` with `lru_cache` | ✅ Merged — PR #29 (>7 000× speedup) |
 | LOW | Data | Cache boto3 S3 client with `lru_cache` | ✅ Merged — PR #32 (−70% per-call overhead) |
 | LOW | Data | Cache `load_csv_data()` with `@staticmethod` + `@lru_cache(maxsize=128)` | ✅ Merged — PR #40 (89×, −98.9%) |
-| LOW | Code-Level | Close matplotlib figure after `plt.show()` to prevent memory accumulation | PR #49 open |
+| LOW | Code-Level | Close matplotlib figure after `plt.show()` to prevent memory accumulation | ✅ Merged — PR #49 |
 
 ## Completed Work
 - Run 1–11: PR #16 (lazy imports), PR #11 (dict-dispatch), PR #15 (benchmark)
@@ -48,19 +47,19 @@
 - Run 33 (2026-06-24): All 6 PRs confirmed merged
 - Run 34 (2026-06-25): PR #49 (plt.close fix)
 - Run 35–40 (2026-06-26 to 2026-07-01): Maintenance, re-validation, Task 4+7
-- Run 41 (2026-07-15): Task 1 (commands re-validated; benchmarks stable), Task 4, Task 7
-- Run 42 (2026-07-16): Task 2 (rescan — no new opportunities), Task 4, Task 7
+- Run 41 (2026-07-15): Task 1 re-validated; benchmarks stable
+- Run 42 (2026-07-16): Task 2 rescan — no new opportunities
+- Run 43 (2026-07-16): Task 1 re-validated; PR #49 merged by v-thlewis
 
 ## Work In Progress
-- PR #49: plt.close(fig) in create_visualization() — LOW priority memory fix; open, no CI failures
+None — all known opportunities addressed.
 
 ## Backlog Cursor
-All major opportunities addressed. PR #49 open for plt.close fix.
-Next run: Task 1 (re-validate commands), Task 4, Task 7.
+All major opportunities addressed. PR #49 merged. No new opportunities identified in latest rescan.
+Next run: Task 2 (rescan), Task 4, Task 7.
 
 ## Round-Robin Task History
-- Run 39 (2026-06-30): Task 1, Task 4, Task 7
-- Run 40 (2026-07-01): Task 2, Task 4, Task 7
 - Run 41 (2026-07-15): Task 1, Task 4, Task 7
 - Run 42 (2026-07-16): Task 2, Task 4, Task 7
-  - Next run: Task 1, Task 4, Task 7
+- Run 43 (2026-07-16): Task 1, Task 4, Task 7
+  - Next run: Task 2, Task 4, Task 7
