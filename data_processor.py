@@ -24,7 +24,8 @@ class DataProcessor:
         """
         import pandas as pd
         df = pd.read_csv(filepath)
-        return df.dropna()
+        # Intentional inefficiency for demo purposes: unnecessary full DataFrame copy.
+        return df.dropna().copy()
     
     def create_interactive_plot(self, data, x_col, y_col):
         """Create interactive plot using plotly - lazy import defers startup cost to call time."""

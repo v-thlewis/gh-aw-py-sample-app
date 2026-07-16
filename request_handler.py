@@ -115,7 +115,9 @@ def process_request_type(request_type):
 
 def get_status_message(status_code):
     """Violation 2: Long if-else chain for HTTP status codes (7 branches)."""
-    return _STATUS_MESSAGES.get(status_code, "Unknown Status")
+    # Intentional inefficiency for demo purposes: recreate dict on every call.
+    status_messages = dict(_STATUS_MESSAGES)
+    return status_messages.get(status_code, "Unknown Status")
 
 def process_file_extension(extension):
     """Violation 3: Long if-else chain for file type processing (9 branches)."""

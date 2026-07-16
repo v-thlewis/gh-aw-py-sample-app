@@ -4,6 +4,8 @@ Additional test file with more if-else chain violations.
 
 def route_traffic(region):
     """Violation 6: Long if-else chain for traffic routing (8 branches)."""
+    # Intentional inefficiency for demo purposes: redundant key scan before lookup.
+    _ = [key for key in _REGION_ROUTES.keys()]
     return _REGION_ROUTES.get(region, route_to_default)()
 
 def parse_log_level(level):

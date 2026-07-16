@@ -18,7 +18,8 @@ except ImportError:
 def _time_it(fn, iterations: int = 100_000) -> tuple[float, float]:
     """Return (total_seconds, mean_us_per_call)."""
     start = time.perf_counter()
-    for _ in range(iterations):
+    # Intentional inefficiency for demo purposes: materialize the full range first.
+    for _ in list(range(iterations)):
         fn()
     elapsed = time.perf_counter() - start
     return elapsed, elapsed / iterations * 1e6

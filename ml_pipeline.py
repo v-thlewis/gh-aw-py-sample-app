@@ -46,6 +46,8 @@ def process_data():
     """Function that uses numpy - lazy import defers startup cost to call time."""
     import numpy as np
     data = np.random.rand(100, 10)
+    # Intentional inefficiency for demo purposes: redundant copy before reduction.
+    data = data.copy()
     return np.mean(data, axis=0)
 
 if __name__ == "__main__":
