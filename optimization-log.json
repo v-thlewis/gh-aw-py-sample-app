@@ -158,5 +158,15 @@
     "recommendations_count": 4,
     "subagent_candidates": 2,
     "estimated_aic_savings_per_run": 0.0
+  },
+  {
+    "date": "2026-07-17",
+    "workflow_name": "Agentic Workflow AIC Usage Optimizer",
+    "total_ai_credits_analyzed": 0.0,
+    "total_tokens_analyzed": 0,
+    "runs_audited": 5,
+    "recommendations_count": 4,
+    "subagent_candidates": 2,
+    "estimated_aic_savings_per_run": 55.0
   }
 ]
