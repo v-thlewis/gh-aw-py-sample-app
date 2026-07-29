@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Python Sample Dashboard</title>
+    <style>
+      /*__APP_CSS__*/
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <header class="header">
+        <h1>Python Sample Dashboard</h1>
+        <p>Explore modules, violations, benchmark output, and dispatch behavior.</p>
+      </header>
+
+      <nav class="tabs" aria-label="Dashboard tabs">
+        <button type="button" class="tab is-active" data-tab="modules">Modules</button>
+        <button type="button" class="tab" data-tab="violations">Violations</button>
+        <button type="button" class="tab" data-tab="benchmark">Benchmark</button>
+        <button type="button" class="tab" data-tab="dispatch">Dispatch</button>
+      </nav>
+
+      <main>
+        <section class="panel" data-panel="modules"></section>
+        <section class="panel is-hidden" data-panel="violations"></section>
+        <section class="panel is-hidden" data-panel="benchmark"></section>
+        <section class="panel is-hidden" data-panel="dispatch"></section>
+      </main>
+    </div>
+
+    <script>
+      /*__APP_JS__*/
+    </script>
+  </body>
+</html>

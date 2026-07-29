@@ -1,0 +1,6 @@
+{
+  "id": "py-sample-dashboard",
+  "name": "Python Sample Dashboard",
+  "description": "Project-scoped Copilot Canvas extension for browsing sample modules, violations, and benchmark output.",
+  "entrypoint": "extension.mjs"
+}
