@@ -1,0 +1,54 @@
+{
+  "date": "2026-07-30",
+  "period_days": 1,
+  "overall": {
+    "total_runs": 3,
+    "total_ai_credits": 0.0,
+    "total_tokens": 0,
+    "total_action_minutes": 25.0
+  },
+  "workflows": [
+    {
+      "workflow_name": "Efficiency Improver",
+      "run_count": 1,
+      "total_ai_credits": 0.0,
+      "avg_ai_credits": 0.0,
+      "total_tokens": 0,
+      "avg_tokens": 0,
+      "total_turns": 0,
+      "avg_turns": 0.0,
+      "total_action_minutes": 8.0,
+      "error_count": 0,
+      "warning_count": 0,
+      "latest_run_url": "https://github.com/v-thlewis/gh-aw-py-sample-app/actions/runs/30522323588"
+    },
+    {
+      "workflow_name": "Daily Agentic Workflow AIC Usage Audit",
+      "run_count": 1,
+      "total_ai_credits": 0.0,
+      "avg_ai_credits": 0.0,
+      "total_tokens": 0,
+      "avg_tokens": 0,
+      "total_turns": 0,
+      "avg_turns": 0.0,
+      "total_action_minutes": 8.0,
+      "error_count": 0,
+      "warning_count": 0,
+      "latest_run_url": "https://github.com/v-thlewis/gh-aw-py-sample-app/actions/runs/30454816433"
+    },
+    {
+      "workflow_name": "Agentic Workflow AIC Usage Optimizer",
+      "run_count": 1,
+      "total_ai_credits": 0.0,
+      "avg_ai_credits": 0.0,
+      "total_tokens": 0,
+      "avg_tokens": 0,
+      "total_turns": 0,
+      "avg_turns": 0.0,
+      "total_action_minutes": 9.0,
+      "error_count": 0,
+      "warning_count": 0,
+      "latest_run_url": "https://github.com/v-thlewis/gh-aw-py-sample-app/actions/runs/30466131439"
+    }
+  ]
+}
