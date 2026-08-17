@@ -1,15 +1,5 @@
 [
   {
-    "date": "2026-06-22",
-    "workflow_name": "Efficiency Improver",
-    "total_ai_credits_analyzed": 3429.69738,
-    "total_tokens_analyzed": 7258769,
-    "runs_audited": 8,
-    "recommendations_count": 4,
-    "subagent_candidates": 2,
-    "estimated_aic_savings_per_run": 90.0
-  },
-  {
     "date": "2026-06-23",
     "workflow_name": "Efficiency Improver",
     "total_ai_credits_analyzed": 3440.69,
@@ -298,5 +288,15 @@
     "recommendations_count": 4,
     "subagent_candidates": 2,
     "estimated_aic_savings_per_run": 0.0
+  },
+  {
+    "date": "2026-08-17",
+    "workflow_name": "Daily Agentic Workflow AIC Usage Audit",
+    "total_ai_credits_analyzed": 0.0,
+    "total_tokens_analyzed": 0,
+    "runs_audited": 5,
+    "recommendations_count": 4,
+    "subagent_candidates": 0,
+    "estimated_aic_savings_per_run": 35.0
   }
 ]
