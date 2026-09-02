@@ -56,3 +56,9 @@ No remaining code-level violations identified. Monitor for new commits re-introd
 - July 2026: issue #56 (closed 2026-08-01)
 - August 2026: issue #104 (closed 2026-09-01)
 - September 2026: issue created this run (open)
+
+## Run 91 (2026-09-02): Task 1, Task 4, Task 7
+- PR #114 verified clean/mergeable, no CI configured, no action needed
+- Files re-validated: all 5 compile OK
+- Issues #152/#153/#154 are aw infra failures (invalid model config) — not actionable by Efficiency Improver; left for maintainer
+- Next run: Task 2, Task 5, Task 6, Task 7
