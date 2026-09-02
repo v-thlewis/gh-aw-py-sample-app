@@ -35,7 +35,7 @@ tools:
     max-patch-size: 51200
 steps:
   - name: Setup Python
-    uses: actions/setup-python@v6.2.0
+    uses: actions/setup-python@v7.0.0
     with:
       python-version: "3.12"
   - name: Setup local chart workspace
@@ -50,30 +50,65 @@ steps:
     run: |
       set -euo pipefail
       mkdir -p /tmp/gh-aw/token-audit
+      PARTS_DIR=/tmp/gh-aw/token-audit/log-parts
+      mkdir -p "$PARTS_DIR"
 
-      # Download last 24 hours of agentic workflow logs as JSON
-      # Allow partial results — gh aw logs streams incrementally, so even if
-      # it hits an API rate limit partway through, the JSON written so far is
-      # still valid and should be processed by the agent.
-      LOGS_EXIT=0
-      gh aw logs \
-        --start-date -1d \
-        --json \
-        -c 100 \
-        > /tmp/gh-aw/token-audit/workflow-logs.json || LOGS_EXIT=$?
+      # Fetch logs per workflow to avoid repo-wide pagination truncation in
+      # high-CI-volume repositories.
+      FOUND_WORKFLOW=0
+      for workflow in .github/workflows/*.md; do
+        [ -f "$workflow" ] || continue
 
-      if [ -s /tmp/gh-aw/token-audit/workflow-logs.json ]; then
+        WORKFLOW_ID=$(sed -n 's/^tracker-id:[[:space:]]*//p' "$workflow" | head -n 1 | tr -d '\r' | sed 's/[[:space:]]*$//')
+        [ -n "$WORKFLOW_ID" ] || continue
+
+        FOUND_WORKFLOW=1
+        SAFE_WORKFLOW_ID=$(printf '%s' "$WORKFLOW_ID" | tr -cs 'A-Za-z0-9._-' '_')
+        PART_FILE="$PARTS_DIR/$SAFE_WORKFLOW_ID.json"
+        PART_EXIT=0
+        gh aw logs "$WORKFLOW_ID" \
+          --start-date -1d \
+          --json \
+          -c 100 \
+          > "$PART_FILE" || PART_EXIT=$?
+
+        if ! jq -e . "$PART_FILE" >/dev/null 2>&1; then
+          echo "⚠️ $WORKFLOW_ID: invalid log JSON (exit code $PART_EXIT)"
+          rm -f "$PART_FILE"
+          continue
+        fi
+
+        COUNT=$(jq '(.runs // []) | length' "$PART_FILE")
+        if [ "$COUNT" -gt 0 ]; then
+          echo "✅ $WORKFLOW_ID: downloaded $COUNT runs (exit code $PART_EXIT)"
+        else
+          echo "⚠️ $WORKFLOW_ID: no log data (exit code $PART_EXIT)"
+          rm -f "$PART_FILE"
+        fi
+      done
+
+      if [ "$FOUND_WORKFLOW" -eq 1 ] && ls "$PARTS_DIR"/*.json >/dev/null 2>&1; then
+        jq -s '
+          (map(.runs // []) | add // [] | unique_by(.run_id)) as $runs |
+          {
+            summary: {
+              total_runs: ($runs | length),
+              total_tokens: ($runs | map(.token_usage // 0) | add // 0),
+              total_aic: ($runs | map(.aic // 0) | add // 0)
+            },
+            runs: $runs
+          }
+        ' "$PARTS_DIR"/*.json > /tmp/gh-aw/token-audit/workflow-logs.json
         TOTAL=$(jq '.runs | length' /tmp/gh-aw/token-audit/workflow-logs.json)
         echo "✅ Downloaded $TOTAL agentic workflow runs (last 24 hours)"
-        if [ "$LOGS_EXIT" -ne 0 ]; then
-          echo "⚠️ gh aw logs exited with code $LOGS_EXIT (partial results — likely API rate limit)"
-        fi
       else
-        echo "❌ No log data downloaded (exit code $LOGS_EXIT)"
+        if [ "$FOUND_WORKFLOW" -eq 0 ]; then
+          echo "⚠️ No agentic workflow sources found under .github/workflows"
+        fi
         echo '{"runs":[],"summary":{}}' > /tmp/gh-aw/token-audit/workflow-logs.json
       fi
 timeout-minutes: 25
-source: githubnext/agentic-ops@c31cadc6b436d75014a8e2ad34dcfd4c5c079256
+source: githubnext/agentic-ops@1115d071436896bba2115678d453c0fa545d7345
 ---
 
 # Daily Agentic Workflow AIC Usage Audit

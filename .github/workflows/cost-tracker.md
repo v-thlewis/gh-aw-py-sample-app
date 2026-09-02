@@ -33,7 +33,7 @@ tools:
 
 timeout-minutes: 10
 
-source: githubnext/agentics/workflows/cost-tracker.md@e15e57b40918dbca11b350c55d02ab61934afa75
+source: githubnext/agentics/workflows/cost-tracker.md@578e0e0ea6291fed42a36d3fd46cec6a0e86afd8
 ---
 
 # Agent Cost Tracker
