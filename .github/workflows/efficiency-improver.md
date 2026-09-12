@@ -61,7 +61,6 @@ safe-outputs:
     max: 1
 
 checkout:
-  fetch: ["*"]
   fetch-depth: 0
 
 tools:
