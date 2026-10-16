@@ -1,6 +1,6 @@
 """
-Test file with intentional lazy import violations.
-This file imports heavy dependencies at the top level but only uses them inside functions.
+ML pipeline module. Heavy dependencies (torch, numpy, matplotlib, sklearn)
+are imported lazily inside each function to reduce startup cost and memory.
 """
 
 

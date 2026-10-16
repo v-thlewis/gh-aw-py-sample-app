@@ -1,5 +1,6 @@
 """
-Test file with intentional lazy import violations for data processing.
+Data processing module. Heavy dependencies (pandas, boto3, plotly, scipy)
+are imported lazily inside each function to reduce startup cost and memory.
 """
 
 
