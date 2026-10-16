@@ -52,3 +52,33 @@ This project serves as a test harness for:
 ## Usage
 
 Use this application to test detection tools and analysis systems. The intentional violations are marked throughout the code and documented above to validate that detection systems properly identify efficiency problems.
+
+## Copilot Canvas Extension
+
+This repository now includes a project-scoped Copilot Canvas extension at:
+
+- `.github/extensions/py-sample-dashboard`
+
+The extension provides a lightweight dashboard and action surface for this sample app.
+
+### Included Actions
+
+- `listModules(page, pageSize)`
+- `listViolations()`
+- `runBenchmark()`
+- `runDispatchDemo(requestType, statusCode, region)`
+- `inspectLazyImports()`
+- `renderStepSummary(markdown)`
+
+### Dashboard Views
+
+- Modules
+- Violations
+- Benchmark
+- Dispatch
+
+### Notes
+
+- UI assets are bundled locally (no CDN runtime dependencies).
+- The dashboard HTML is inlined into a `data:` URL by `extension.mjs`.
+- Pagination inputs are normalized defensively to avoid invalid metadata.
