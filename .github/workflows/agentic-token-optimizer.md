@@ -2,7 +2,7 @@
 description: Daily optimizer that identifies a high-AIC agentic workflow, audits its runs, and recommends efficiency improvements including inline sub-agent refactors when warranted
 on:
   schedule:
-    - cron: "daily around 14:00 on weekdays"
+    - cron: "weekly on monday around 14:00"
   workflow_dispatch:
 permissions:
   contents: read

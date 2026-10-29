@@ -2,7 +2,7 @@
 description: Daily audit of AI Credit (AIC) usage across all agentic workflows with historical trend tracking
 on:
   schedule:
-    - cron: "daily around 12:00 on weekdays"
+    - cron: "weekly on monday around 12:00"
   workflow_dispatch:
 permissions:
   contents: read
@@ -35,7 +35,7 @@ tools:
     max-patch-size: 51200
 steps:
   - name: Setup Python
-    uses: actions/setup-python@v7.0.0
+    uses: actions/setup-python@v7.1.0
     with:
       python-version: "3.12"
   - name: Setup local chart workspace
