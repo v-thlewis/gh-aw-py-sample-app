@@ -127,8 +127,13 @@
   }
 
   async function loadInitialData() {
-    state.modules = await invokeAction("listModules", { page: 1, pageSize: 10 });
-    state.violations = await invokeAction("listViolations", {});
+    // Fire both independent requests concurrently instead of awaiting them
+    // sequentially - halves the wall-clock time (and idle CPU wait) spent
+    // waiting on the action bridge during initial page load.
+    [state.modules, state.violations] = await Promise.all([
+      invokeAction("listModules", { page: 1, pageSize: 10 }),
+      invokeAction("listViolations", {}),
+    ]);
 
     renderModules();
     renderViolations();
