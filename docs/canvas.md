@@ -15,7 +15,6 @@ This canvas summarizes architecture, runtime flow, quality/performance/security/
 ├─ traffic_router.py
 ├─ data_processor.py
 ├─ ml_pipeline.py
-├─ benchmark.py
 ├─ .github/
 └─ .vscode/
 ```
@@ -25,7 +24,6 @@ This canvas summarizes architecture, runtime flow, quality/performance/security/
 - **`traffic_router.py`**: routing and path-selection policy
 - **`data_processor.py`**: preprocessing/transformation logic
 - **`ml_pipeline.py`**: model/pipeline execution path
-- **`benchmark.py`**: performance and regression benchmarking
 
 ---
 
@@ -156,7 +154,7 @@ Track:
 - **Integration tests**
   - full request flow through `request_handler.py`
 - **Performance tests**
-  - `benchmark.py` thresholds as regression gates
+  - add benchmark thresholds as regression gates
 
 ### High-value missing tests (priority)
 1. Router ambiguity and fallback determinism.
@@ -191,7 +189,7 @@ Track:
 ### P1 — Near-term
 4. Refactor `request_handler.py` into explicit orchestration stages.
 5. Add contract tests across router/processor/pipeline boundaries.
-6. Convert benchmark checks into CI pass/fail thresholds.
+6. Add benchmark checks with CI pass/fail thresholds.
 
 ### P2 — Medium-term
 7. Optimize data transform allocations and cache immutable pipeline artifacts.

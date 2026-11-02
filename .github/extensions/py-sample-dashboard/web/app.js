@@ -2,7 +2,6 @@
   const state = {
     modules: null,
     violations: null,
-    benchmark: null,
     dispatch: null,
   };
 
@@ -74,23 +73,6 @@
     `;
   }
 
-  function renderBenchmark() {
-    const panel = document.querySelector('[data-panel="benchmark"]');
-
-    panel.innerHTML = `
-      <div class="controls">
-        <button class="primary" id="run-benchmark">Run benchmark.py</button>
-      </div>
-      <pre>${escapeHtml(state.benchmark ? `${state.benchmark.stdout || ""}\n${state.benchmark.stderr || ""}` : "Run benchmark to view output.")}</pre>
-    `;
-
-    panel.querySelector("#run-benchmark")?.addEventListener("click", async () => {
-      panel.querySelector("pre").textContent = "Running benchmark...";
-      state.benchmark = await invokeAction("runBenchmark", {});
-      renderBenchmark();
-    });
-  }
-
   function renderDispatch() {
     const panel = document.querySelector('[data-panel="dispatch"]');
 
@@ -137,7 +119,6 @@
 
     renderModules();
     renderViolations();
-    renderBenchmark();
     renderDispatch();
   }
 

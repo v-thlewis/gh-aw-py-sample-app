@@ -65,7 +65,6 @@ The extension provides a lightweight dashboard and action surface for this sampl
 
 - `listModules(page, pageSize)`
 - `listViolations()`
-- `runBenchmark()`
 - `runDispatchDemo(requestType, statusCode, region)`
 - `inspectLazyImports()`
 - `renderStepSummary(markdown)`
@@ -74,7 +73,6 @@ The extension provides a lightweight dashboard and action surface for this sampl
 
 - Modules
 - Violations
-- Benchmark
 - Dispatch
 
 ### Notes
@@ -82,3 +80,4 @@ The extension provides a lightweight dashboard and action surface for this sampl
 - UI assets are bundled locally (no CDN runtime dependencies).
 - The dashboard HTML is inlined into a `data:` URL by `extension.mjs`.
 - Pagination inputs are normalized defensively to avoid invalid metadata.
+- Test the violation summary parser with `node --test .github/extensions/py-sample-dashboard/tests/readme-violations.test.mjs`.

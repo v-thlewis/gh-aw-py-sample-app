@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createCanvas } from "@github/copilot-canvas";
+import { parseReadmeViolations } from "./readme-violations.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, "..", "..", "..");
@@ -28,11 +29,6 @@ const MODULES = [
     name: "ml_pipeline.py",
     purpose: "ML pipeline with heavy dependency usage",
     highlights: ["lazy import opportunities", "GPU helper"],
-  },
-  {
-    name: "benchmark.py",
-    purpose: "Wall-clock and memory benchmark harness",
-    highlights: ["import-time benchmark", "dispatch benchmark"],
   },
 ];
 
@@ -123,31 +119,6 @@ function runPython(args, timeoutMs = 30_000) {
       });
     });
   });
-}
-
-function parseReadmeViolations(readme) {
-  const lines = readme.split(/\r?\n/);
-  const violations = [];
-  let currentFile = "";
-
-  for (const line of lines) {
-    const fileHeader = line.match(/^###\s+`([^`]+)`/);
-    if (fileHeader) {
-      currentFile = fileHeader[1];
-      continue;
-    }
-
-    const violationLine = line.match(/^\-\s+\*\*([^*]+)\*\*:\s+(\d+)\s+violations?/i);
-    if (violationLine && currentFile) {
-      violations.push({
-        file: currentFile,
-        type: violationLine[1].trim(),
-        count: Number(violationLine[2]),
-      });
-    }
-  }
-
-  return violations;
 }
 
 async function listViolations() {
@@ -258,11 +229,6 @@ createCanvas({
       name: "listViolations",
       description: "Read violation counts from README.md.",
       handler: async () => listViolations(),
-    },
-    {
-      name: "runBenchmark",
-      description: "Run benchmark.py and return stdout/stderr.",
-      handler: async () => runPython(["benchmark.py"], 60_000),
     },
     {
       name: "runDispatchDemo",
